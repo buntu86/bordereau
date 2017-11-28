@@ -24,7 +24,7 @@
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </VBox.margin>
             </HBox>
-            <Pane fx:id="dragDropZone" maxHeight="1000.0" minHeight="100.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-color: gray; -fx-border-style: dotted; -fx-border-width: 2px; -fx-background-color: white;">
+            <Pane fx:id="dragDropZone" maxHeight="1000.0" minHeight="100.0" prefHeight="100.0" prefWidth="200.0">
                <VBox.margin>
                   <Insets bottom="25.0" left="25.0" right="25.0" />
                </VBox.margin>
