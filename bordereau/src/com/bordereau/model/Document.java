@@ -17,50 +17,47 @@ public class Document {
     private final ObjectProperty<TypeDocument> typeDoc = new SimpleObjectProperty<>();
     private final StringProperty nom = new SimpleStringProperty();
     private final StringProperty nombre = new SimpleStringProperty();    
+    private final StringProperty extension = new SimpleStringProperty();
 
     public Document(String path) {
         setPath(path);
         setNum();
-        setNom();
-        
+        setExtension();
+    }
+
+    public void setPath(String value) {
+        path.set(value);
+    }
+    public void setNum() {       
+        num.set(pathToStringWithPattern("^[a-zA-Z0-9]*-[0-9]*"));
+    }
+    public void setNom() {        
+        num.set("");
+    }
+    public void setExtension() {
+        extension.set(pathToStringWithPattern("\\.\\w*$"));
+    }    
+    
+    public String getExtension() {
+        return extension.get();
+    }
+
+
+
+    public StringProperty extensionProperty() {
+        return extension;
     }
     
     public String getPath() {
         return path.get();
     }
 
-    public void setPath(String value) {
-        path.set(value);
-    }
-
     public StringProperty pathProperty() {
         return path;
     }
-
-
     public String getNum() {
         return num.get();
     }
-
-    public void setNum() {
-        //http://cyberzoide.developpez.com/tutoriels/java/regex/
-        //https://www.freeformatter.com/java-regex-tester.html#ad-output
-        
-        Path tempPath = Paths.get(this.getPath());
-        String str = "";
-        
-        Pattern p = Pattern.compile("^[a-zA-Z0-9]*-[0-9]*");
-        Matcher m = p.matcher(tempPath.getFileName().toString());
-              
-        if(m.find())
-            str = m.group();
-        
-        Log.msg(0, "Num:" + str);
-        
-        num.set(str);
-    }
-
-
     public TypeDocument getTypeDoc() {
         return typeDoc.get();
     }
@@ -82,23 +79,6 @@ public class Document {
         return nom.get();
     }
 
-    public void setNom() {
-        //http://cyberzoide.developpez.com/tutoriels/java/regex/
-        //https://www.freeformatter.com/java-regex-tester.html#ad-output
-        
-        Path tempPath = Paths.get(this.getPath());
-        String str = "";
-        
-        Pattern p = Pattern.compile("^[a-zA-Z0-9]*-[0-9]*");
-        Matcher m = p.matcher(tempPath.getFileName().toString());
-              
-        if(m.find())
-            str = m.group();
-        
-        Log.msg(0, "Nom:" + str);
-        
-        num.set(str);
-    }
 
     public StringProperty nomProperty() {
         return nom;
@@ -117,7 +97,18 @@ public class Document {
         return nombre;
     }
 
-
-
-    
+    private String pathToStringWithPattern(String pattern){
+        Path tempPath = Paths.get(this.getPath());
+        String str = "";
+        
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(tempPath.getFileName().toString());
+              
+        if(m.find())
+            str = m.group();
+        
+        Log.msg(0, "Pattern:" + str);  
+        
+        return str;    
+    }
 }
