@@ -5,7 +5,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -16,26 +18,29 @@ public class Document {
     private final StringProperty num = new SimpleStringProperty();
     private final ObjectProperty<TypeDocument> typeDoc = new SimpleObjectProperty<>();
     private final StringProperty nom = new SimpleStringProperty();
-    private final StringProperty nombre = new SimpleStringProperty();    
+    private final IntegerProperty nombre = new SimpleIntegerProperty();    
     private final StringProperty extension = new SimpleStringProperty();
 
     public Document(String path) {
         setPath(path);
-        setNum();
-        setExtension();
+        setNum(pathToStringWithPattern("^[a-zA-Z0-9]*-[0-9]*[a-zA-Z]?"));
+        setExtension(pathToStringWithPattern("\\.\\w*$"));
+        setNom(iniNom());
+        setNombre(3);        
+        Log.msg(0, "num:" + getNum() + "|nom:" + getNom() + "|ext:" + getExtension());
     }
 
     public void setPath(String value) {
         path.set(value);
     }
-    public void setNum() {       
-        num.set(pathToStringWithPattern("^[a-zA-Z0-9]*-[0-9]*"));
+    public void setNum(String value) {       
+        num.set(value);
     }
-    public void setNom() {        
-        num.set("");
+    public void setNom(String value) {        
+        nom.set(value);
     }
-    public void setExtension() {
-        extension.set(pathToStringWithPattern("\\.\\w*$"));
+    public void setExtension(String value) {
+        extension.set(value);
     }    
     
     public String getExtension() {
@@ -85,16 +90,16 @@ public class Document {
     }
 
 
-    public String getNombre() {
+    public int getNombre() {
         return nombre.get();
     }
 
-    public void setNombre(String value) {
+    public void setNombre(int value) {
         nombre.set(value);
     }
 
     public StringProperty nombreProperty() {
-        return nombre;
+        return new SimpleStringProperty(getNombre() + "x");
     }
 
     private String pathToStringWithPattern(String pattern){
@@ -106,9 +111,17 @@ public class Document {
               
         if(m.find())
             str = m.group();
-        
-        Log.msg(0, "Pattern:" + str);  
-        
+                
         return str;    
+    }
+
+    private String iniNom() {
+        String tmp = Paths.get(getPath()).getFileName().toString();
+        
+        tmp = tmp.replace(getNum(), "");
+        tmp = tmp.replace(getExtension(), "");
+        
+        return tmp.trim();
+        
     }
 }

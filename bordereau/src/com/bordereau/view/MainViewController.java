@@ -6,10 +6,14 @@ import com.bordereau.model.Document;
 import com.bordereau.utils.Log;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
@@ -22,9 +26,29 @@ public class MainViewController implements Initializable {
     @FXML
     private Pane dragDropZone;
     
+    @FXML
+    private TableView<Document> tableView;
+    
+    @FXML
+    private TableColumn<Document, String> tc_num;
+    @FXML
+    private TableColumn<Document, String> tc_nombre;
+    @FXML
+    private TableColumn<Document, String> tc_nom;    
+    @FXML
+    private TableColumn<Document, String> tc_type;    
+
+    private ObservableList<Document> listDocuments = FXCollections.observableArrayList();
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        //Definition colonnes
+        tc_num.setCellValueFactory(cellData -> cellData.getValue().numProperty());
+        tc_nom.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
+        tc_nombre.setCellValueFactory(cellData -> cellData.getValue().nombreProperty());
         
+        //Definitino dropZone
         defaultStyleDropZone();        
         
         auteur.setItems(Employes.getListEmployes());
@@ -50,8 +74,10 @@ public class MainViewController implements Initializable {
         dragDropZone.setOnDragDropped(event -> {
                 boolean success = false;
                 if (event.getGestureSource() != dragDropZone && event.getDragboard().hasFiles()) {
-                    event.getDragboard().getFiles().forEach(file -> System.out.println(file.getAbsolutePath()));
-                    event.getDragboard().getFiles().forEach(file -> new Document(file.getAbsolutePath()));
+                        event.getDragboard().getFiles().forEach(file -> listDocuments.add(new Document(file.getAbsolutePath())));
+                        Log.msg(0, "size:" + listDocuments.size());
+                        if(listDocuments.size()!=0)
+                            tableView.setItems(listDocuments);  
                     }
                     success = true;
                 event.setDropCompleted(success);
@@ -65,8 +91,7 @@ public class MainViewController implements Initializable {
 
                 event.consume();
             }
-        }); 
-        
+        });             
     }     
     
     private void defaultStyleDropZone(){
