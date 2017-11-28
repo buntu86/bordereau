@@ -2,6 +2,7 @@ package com.bordereau.view;
 
 import com.bordereau.data.Employes;
 import com.bordereau.model.Auteur;
+import com.bordereau.model.Document;
 import com.bordereau.utils.Log;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,9 +25,7 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        defaultStyleDropZone();
-        
-        Log.msg(0, "size" + Employes.getListEmployes().size());
+        defaultStyleDropZone();        
         
         auteur.setItems(Employes.getListEmployes());
         auteur.getSelectionModel().selectFirst();
@@ -52,8 +51,9 @@ public class MainViewController implements Initializable {
                 boolean success = false;
                 if (event.getGestureSource() != dragDropZone && event.getDragboard().hasFiles()) {
                     event.getDragboard().getFiles().forEach(file -> System.out.println(file.getAbsolutePath()));
+                    event.getDragboard().getFiles().forEach(file -> new Document(file.getAbsolutePath()));
+                    }
                     success = true;
-                }
                 event.setDropCompleted(success);
                 event.consume();            
         });
@@ -73,7 +73,7 @@ public class MainViewController implements Initializable {
         dragDropZone.setStyle("-fx-border-color: gray; -fx-border-style: dotted; -fx-border-width: 2px; -fx-background-color: white;");
     }
     private void greenStyleDropZone(){
-        dragDropZone.setStyle("-fx-border-color: green; -fx-border-style: dotted; -fx-border-width: 2px; -fx-background-color: white;");
+        dragDropZone.setStyle("-fx-border-color: green; -fx-border-style: dotted; -fx-border-width: 5px; -fx-background-color: white;");
     }    
 }
 
