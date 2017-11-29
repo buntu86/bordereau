@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 
 public class Employes {
    
-    public static ObservableList<Auteur> getListEmployes(){
+    public static ObservableList<Auteur> getList(){
         
         ObservableList<Auteur> list = FXCollections.observableArrayList();
         list.add(new Auteur(0, "inconnu", "inconnu", "---"));

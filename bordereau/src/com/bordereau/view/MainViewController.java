@@ -1,8 +1,10 @@
 package com.bordereau.view;
 
 import com.bordereau.data.Employes;
+import com.bordereau.data.Mandats;
 import com.bordereau.model.Auteur;
 import com.bordereau.model.Document;
+import com.bordereau.model.Mandat;
 import com.bordereau.utils.Log;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,13 +24,15 @@ public class MainViewController implements Initializable {
 
     @FXML
     private ChoiceBox<Auteur> auteur;
+
+    @FXML
+    private ChoiceBox<Mandat> cb_mandat;
     
     @FXML
     private Pane dragDropZone;
     
     @FXML
     private TableView<Document> tableView;
-    
     @FXML
     private TableColumn<Document, String> tc_num;
     @FXML
@@ -36,8 +40,8 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn<Document, String> tc_nom;    
     @FXML
-    private TableColumn<Document, String> tc_type;    
-
+    private TableColumn<Document, String> tc_type; 
+    
     private ObservableList<Document> listDocuments = FXCollections.observableArrayList();
     
     @Override
@@ -47,12 +51,17 @@ public class MainViewController implements Initializable {
         tc_num.setCellValueFactory(cellData -> cellData.getValue().numProperty());
         tc_nom.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
         tc_nombre.setCellValueFactory(cellData -> cellData.getValue().nombreProperty());
-        
-        //Definitino dropZone
-        defaultStyleDropZone();        
-        
-        auteur.setItems(Employes.getListEmployes());
+
+        //Definition choiceBox Employés
+        auteur.setItems(Employes.getList());
         auteur.getSelectionModel().selectFirst();
+
+        //Definition choiceBox mandat
+        cb_mandat.setItems(Mandats.getList());
+        cb_mandat.getSelectionModel().selectFirst();
+        
+        //Definition dropZone
+        defaultStyleDropZone();        
 
         dragDropZone.setOnDragOver((DragEvent event) -> {
             if (event.getGestureSource() != dragDropZone) {

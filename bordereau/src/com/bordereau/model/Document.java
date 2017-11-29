@@ -121,6 +121,9 @@ public class Document {
         tmp = tmp.replace(getNum(), "");
         tmp = tmp.replace(getExtension(), "");
         
+        if(tmp.substring(0, 1).equals("_"));
+            tmp = tmp.substring(1);
+        
         return tmp.trim();
         
     }
