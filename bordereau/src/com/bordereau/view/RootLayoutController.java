@@ -2,6 +2,7 @@ package com.bordereau.view;
 
 import com.bordereau.MainApp;
 import com.bordereau.utils.Log;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -15,6 +16,11 @@ public class RootLayoutController {
         
     }
 
+    @FXML
+    private void exit(){
+        System.exit(0);
+    }
+    
     public void mainView() {
         try {
             FXMLLoader loader = new FXMLLoader();

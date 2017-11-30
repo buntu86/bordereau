@@ -7,6 +7,7 @@ import com.bordereau.model.Document;
 import com.bordereau.model.Mandat;
 import com.bordereau.utils.Log;
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,7 +60,9 @@ public class MainViewController implements Initializable {
         auteur.getSelectionModel().selectFirst();
 
         //Definition choiceBox mandat
-        listMandats = Mandats.getList();
+        listMandats.add(new Mandat(0, "1000", "Divers", ""));
+        listMandats.addAll(Mandats.getList());
+        
         combo_mandat.setItems(listMandats);
         combo_mandat.getSelectionModel().selectFirst();
         
@@ -89,7 +92,8 @@ public class MainViewController implements Initializable {
                         event.getDragboard().getFiles().forEach(file -> listDocuments.add(new Document(file.getAbsolutePath())));
                         if(listDocuments.size()!=0)
                             tableView.setItems(listDocuments);
-                        selectMandat();
+                        Log.msg(0, selectMandat().getNum() + "-" + selectMandat().getNom());
+                        combo_mandat.getSelectionModel().select(selectMandat());
                     }
                     success = true;
                 event.setDropCompleted(success);
@@ -113,28 +117,20 @@ public class MainViewController implements Initializable {
         dragDropZone.setStyle("-fx-border-color: green; -fx-border-style: dotted; -fx-border-width: 5px; -fx-background-color: white;");
     }    
 
-    private void selectMandat() {       
-        String numMandat = listDocuments.get(listDocuments.size()-1).getNumMandat();
+    private Mandat selectMandat() {       
         Mandat mandat = null;
         
-        /*
-        mandat = listMandats.stream()
-                .findAny()
-                .filter(m -> numMandat.equals(m.getNum()))
-                .orElse(null);        
-        */
-
-        Log.msg(0, "size:" + listMandats.size());
+        if(listDocuments.size()>0)
+        {
+            final String numMandat = listDocuments.get(listDocuments.size()-1).getNumMandat();
+            mandat = listMandats
+                    .stream()
+                    .filter(m -> m.getNum().equals(numMandat))
+                    .findFirst()
+                    .get();
+        }
         
-        mandat = listMandats.stream()
-                .findAny()
-                .filter(m -> numMandat.equals("463"))
-                .orElse(null);        
-        Log.msg(0, "mandat:" + mandat.getNom());
-        //Log.msg(0, mandat.getNum() + " " + mandat.getNom());
-        
-        //combo_mandat.getSelectionModel().select(obj);
-
+        return mandat;
     }
 }
 
