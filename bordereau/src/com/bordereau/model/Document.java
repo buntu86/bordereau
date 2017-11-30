@@ -20,14 +20,16 @@ public class Document {
     private final StringProperty nom = new SimpleStringProperty();
     private final IntegerProperty nombre = new SimpleIntegerProperty();    
     private final StringProperty extension = new SimpleStringProperty();
-
+    private final StringProperty numMandat = new SimpleStringProperty();
+    
     public Document(String path) {
         setPath(path);
         setNum(pathToStringWithPattern("^[a-zA-Z0-9]*-[0-9]*[a-zA-Z]?"));
         setExtension(pathToStringWithPattern("\\.\\w*$"));
         setNom(iniNom());
-        setNombre(3);        
-        Log.msg(0, "num:" + getNum() + "|nom:" + getNom() + "|ext:" + getExtension());
+        setNombre(3);
+        setNumMandat(pathToStringWithPattern("^[a-zA-Z0-9]*"));
+        Log.msg(0, "num:" + getNum() + "|nom:" + getNom() + "|ext:" + getExtension() + "|mandat:" + getNumMandat());
     }
 
     public void setPath(String value) {
@@ -45,6 +47,18 @@ public class Document {
     
     public String getExtension() {
         return extension.get();
+    }
+
+   public String getNumMandat() {
+        return numMandat.get();
+    }
+
+    public void setNumMandat(String value) {
+        numMandat.set(value);
+    }
+
+    public StringProperty numMandatProperty() {
+        return numMandat;
     }
 
 
@@ -121,7 +135,7 @@ public class Document {
         tmp = tmp.replace(getNum(), "");
         tmp = tmp.replace(getExtension(), "");
         
-        if(tmp.substring(0, 1).equals("_"));
+        if(tmp.substring(0, 1).equals("_"))
             tmp = tmp.substring(1);
         
         return tmp.trim();

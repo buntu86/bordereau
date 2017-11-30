@@ -44,6 +44,7 @@ public class MainViewController implements Initializable {
     private TableColumn<Document, String> tc_type; 
     
     private ObservableList<Document> listDocuments = FXCollections.observableArrayList();
+    private ObservableList<Mandat> listMandats = FXCollections.observableArrayList();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -58,7 +59,8 @@ public class MainViewController implements Initializable {
         auteur.getSelectionModel().selectFirst();
 
         //Definition choiceBox mandat
-        combo_mandat.setItems(Mandats.getList());
+        listMandats = Mandats.getList();
+        combo_mandat.setItems(listMandats);
         combo_mandat.getSelectionModel().selectFirst();
         
         //Definition dropZone
@@ -85,9 +87,9 @@ public class MainViewController implements Initializable {
                 boolean success = false;
                 if (event.getGestureSource() != dragDropZone && event.getDragboard().hasFiles()) {
                         event.getDragboard().getFiles().forEach(file -> listDocuments.add(new Document(file.getAbsolutePath())));
-                        Log.msg(0, "size:" + listDocuments.size());
                         if(listDocuments.size()!=0)
-                            tableView.setItems(listDocuments);  
+                            tableView.setItems(listDocuments);
+                        selectMandat();
                     }
                     success = true;
                 event.setDropCompleted(success);
@@ -110,5 +112,25 @@ public class MainViewController implements Initializable {
     private void greenStyleDropZone(){
         dragDropZone.setStyle("-fx-border-color: green; -fx-border-style: dotted; -fx-border-width: 5px; -fx-background-color: white;");
     }    
+
+    private void selectMandat() {
+        Log.msg(0, "---");
+        
+        String numMandat = listDocuments.get(listDocuments.size()-1).getNumMandat();
+        
+        Mandat mandat = listMandats.stream()
+                .findFirst()
+                .filter(m -> numMandat.equals(m.getNum()))
+                .orElse(null);        
+        
+        listDocuments.stream()
+                .findFirst()
+                .filter(d -> numMandat.equals(d.getNumMandat()));
+
+        Log.msg(0, mandat.getNum() + " " + mandat.getNom());
+        
+        //combo_mandat.getSelectionModel().select(obj);
+
+    }
 }
 
