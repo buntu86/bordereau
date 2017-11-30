@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.DragEvent;
@@ -24,9 +25,9 @@ public class MainViewController implements Initializable {
 
     @FXML
     private ChoiceBox<Auteur> auteur;
-
+    
     @FXML
-    private ChoiceBox<Mandat> cb_mandat;
+    private ComboBox<Mandat> combo_mandat;
     
     @FXML
     private Pane dragDropZone;
@@ -57,8 +58,8 @@ public class MainViewController implements Initializable {
         auteur.getSelectionModel().selectFirst();
 
         //Definition choiceBox mandat
-        cb_mandat.setItems(Mandats.getList());
-        cb_mandat.getSelectionModel().selectFirst();
+        combo_mandat.setItems(Mandats.getList());
+        combo_mandat.getSelectionModel().selectFirst();
         
         //Definition dropZone
         defaultStyleDropZone();        
