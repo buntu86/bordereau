@@ -113,21 +113,25 @@ public class MainViewController implements Initializable {
         dragDropZone.setStyle("-fx-border-color: green; -fx-border-style: dotted; -fx-border-width: 5px; -fx-background-color: white;");
     }    
 
-    private void selectMandat() {
-        Log.msg(0, "---");
-        
+    private void selectMandat() {       
         String numMandat = listDocuments.get(listDocuments.size()-1).getNumMandat();
+        Mandat mandat = null;
         
-        Mandat mandat = listMandats.stream()
-                .findFirst()
+        /*
+        mandat = listMandats.stream()
+                .findAny()
                 .filter(m -> numMandat.equals(m.getNum()))
                 .orElse(null);        
-        
-        listDocuments.stream()
-                .findFirst()
-                .filter(d -> numMandat.equals(d.getNumMandat()));
+        */
 
-        Log.msg(0, mandat.getNum() + " " + mandat.getNom());
+        Log.msg(0, "size:" + listMandats.size());
+        
+        mandat = listMandats.stream()
+                .findAny()
+                .filter(m -> numMandat.equals("463"))
+                .orElse(null);        
+        Log.msg(0, "mandat:" + mandat.getNom());
+        //Log.msg(0, mandat.getNum() + " " + mandat.getNom());
         
         //combo_mandat.getSelectionModel().select(obj);
 
