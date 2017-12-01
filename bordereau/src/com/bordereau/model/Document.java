@@ -22,6 +22,9 @@ public class Document {
     private final StringProperty extension = new SimpleStringProperty();
     private final StringProperty numMandat = new SimpleStringProperty();
     
+    public Document(){
+    }
+    
     public Document(String path) {
         setPath(path);
         setNum(pathToStringWithPattern("^[a-zA-Z0-9]*-[0-9]*[a-zA-Z]?"));
@@ -31,7 +34,7 @@ public class Document {
         setNumMandat(pathToStringWithPattern("^[a-zA-Z0-9]*"));
         Log.msg(0, "num:" + getNum() + "|nom:" + getNom() + "|ext:" + getExtension() + "|mandat:" + getNumMandat());
     }
-
+    
     public void setPath(String value) {
         path.set(value);
     }

@@ -5,10 +5,14 @@ import com.bordereau.data.Mandats;
 import com.bordereau.model.Auteur;
 import com.bordereau.model.Document;
 import com.bordereau.model.Mandat;
+import com.bordereau.model.XmlPrint;
 import com.bordereau.utils.Log;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -21,6 +25,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 public class MainViewController implements Initializable {
 
@@ -132,5 +139,23 @@ public class MainViewController implements Initializable {
         
         return mandat;
     }
+    
+    @FXML
+    private void print(){
+        
+        XmlPrint printDoc = new XmlPrint(listDocuments);
+        
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(XmlPrint.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            StringWriter sw = new StringWriter();
+            jaxbMarshaller.marshal(printDoc, sw);
+            String xmlString = sw.toString();
+            System.out.println(xmlString);                
+        } catch (JAXBException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 }
 
