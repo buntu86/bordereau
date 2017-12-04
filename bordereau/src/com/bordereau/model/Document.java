@@ -21,20 +21,41 @@ public class Document {
     private final IntegerProperty nombre = new SimpleIntegerProperty();    
     private final StringProperty extension = new SimpleStringProperty();
     private final StringProperty numMandat = new SimpleStringProperty();
+    private final StringProperty numAnnexe = new SimpleStringProperty();
     
     public Document(){
     }
     
     public Document(String path) {
         setPath(path);
-        setNum(pathToStringWithPattern("^[a-zA-Z0-9]*-[0-9]*[a-zA-Z]?"));
+        setNum(pathToStringWithPattern("(^\\w* ?- ?\\d*[a-z]?)+(\\.[0-9])?").replace(" ", ""));
         setExtension(pathToStringWithPattern("\\.\\w*$"));
         setNom(iniNom());
         setNombre(3);
         setNumMandat(pathToStringWithPattern("^[a-zA-Z0-9]*"));
-        Log.msg(0, "num:" + getNum() + "|nom:" + getNom() + "|ext:" + getExtension() + "|mandat:" + getNumMandat());
+        Log.msg(0, "num:" + getNum() + "|nom:" + getNom() + "|ext:" + getExtension() + "|mandat:" + getNumMandat() + "|isAList:" + isAList());
+    }
+
+    public boolean isAList(){
+        Pattern p = Pattern.compile("\\.\\[0-9]?$");
+        Matcher m = p.matcher(getNum());
+        Log.msg(0, getNum());
+        if(m.matches())
+            return true;
+        else
+            return false;        
     }
     
+    public String getNumAnnexe() {
+        return numAnnexe.get();
+    }
+
+    public void setNumAnnexe(String value) {
+        numAnnexe.set(value);
+    }
+    public StringProperty numAnnexeProperty() {
+        return numAnnexe;
+    }    
     public void setPath(String value) {
         path.set(value);
     }
