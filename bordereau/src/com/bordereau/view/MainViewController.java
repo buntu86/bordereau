@@ -9,6 +9,7 @@ import com.bordereau.model.XmlPrint;
 import com.bordereau.utils.Log;
 import java.io.StringWriter;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -20,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.DragEvent;
@@ -51,12 +53,17 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn<Document, String> tc_type; 
     
+    @FXML
+    private DatePicker date;
+    
     private ObservableList<Document> listDocuments = FXCollections.observableArrayList();
     private ObservableList<Mandat> listMandats = FXCollections.observableArrayList();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        date.setValue(LocalDate.now());
+        
         //Definition colonnes
         tc_num.setCellValueFactory(cellData -> cellData.getValue().numProperty());
         tc_nom.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
