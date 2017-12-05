@@ -6,16 +6,15 @@ import com.bordereau.model.Auteur;
 import com.bordereau.model.Document;
 import com.bordereau.model.Mandat;
 import com.bordereau.utils.Log;
-import java.io.BufferedOutputStream;
+
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -29,16 +28,23 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+
 import javax.xml.transform.Result;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.apache.fop.*;
+import org.apache.fop.apps.FOPException;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.xmlgraphics.util.MimeConstants;
+
 import org.xml.sax.SAXException;
 
 public class MainViewController implements Initializable {
@@ -158,7 +164,7 @@ public class MainViewController implements Initializable {
     }
     
     @FXML
-    private void print(){
+    private void print() throws FileNotFoundException, FOPException, TransformerConfigurationException, TransformerException, IOException, SAXException{
         
         /*XmlPrint printDoc = new XmlPrint(listDocuments);
         
@@ -173,6 +179,33 @@ public class MainViewController implements Initializable {
         } catch (JAXBException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }*/
+        //https://netjs.blogspot.ch/2015/07/how-to-create-pdf-from-xml-using-apache-fop.html
+        
+        File xsltFile = new File("C:/Temp/template.xsl");
+        StreamSource xmlSource = new StreamSource(new File("C:/Temp/Employees.xml"));
+        FopFactory fopFactory = FopFactory.newInstance(new File("C:/Temp/fop.xconf"));
+        FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+        OutputStream out;
+        out = new java.io.FileOutputStream("C:/Temp/employee.pdf");
+        try {
+            // Construct fop with desired output format
+            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
+            
+            // Setup XSLT
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer(new StreamSource(xsltFile));
+
+            // Resulting SAX events (the generated FO) must be piped through to FOP
+            Result res = new SAXResult(fop.getDefaultHandler());
+
+            // Start XSLT transformation and FOP processing
+            // That's where the XML is first transformed to XSL-FO and then 
+            // PDF is created
+            transformer.transform(xmlSource, res);
+        } finally {
+            out.close();
+        }        
     }    
 }
 
+//Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
