@@ -5,12 +5,14 @@ import com.bordereau.data.Mandats;
 import com.bordereau.model.Auteur;
 import com.bordereau.model.Document;
 import com.bordereau.model.Mandat;
-import com.bordereau.model.XmlPrint;
 import com.bordereau.utils.Log;
-import java.io.StringWriter;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,9 +29,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.fop.apps.FOUserAgent;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.xmlgraphics.util.MimeConstants;
+import org.xml.sax.SAXException;
 
 public class MainViewController implements Initializable {
 
@@ -150,7 +160,7 @@ public class MainViewController implements Initializable {
     @FXML
     private void print(){
         
-        XmlPrint printDoc = new XmlPrint(listDocuments);
+        /*XmlPrint printDoc = new XmlPrint(listDocuments);
         
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(XmlPrint.class);
@@ -162,7 +172,7 @@ public class MainViewController implements Initializable {
             System.out.println(xmlString);                
         } catch (JAXBException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }    
 }
 
