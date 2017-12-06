@@ -28,6 +28,7 @@ public class RootLayoutController {
             AnchorPane mainViewLayout = (AnchorPane) loader.load();     
             MainViewController controller = loader.getController();
             
+            
             rootLayout.setCenter(mainViewLayout);
 
         } catch (Exception e) {

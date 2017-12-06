@@ -47,7 +47,6 @@ import org.apache.fop.apps.FOPException;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.xmlgraphics.util.MimeConstants;
 
 
@@ -82,20 +81,7 @@ public class MainViewController implements Initializable {
     private ObservableList<Mandat> listMandats = FXCollections.observableArrayList();
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
-        try {
-            print();
-        } catch (IOException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TransformerException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JAXBException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+    public void initialize(URL url, ResourceBundle rb) {        
         date.setValue(LocalDate.now());
         
         //Definition colonnes
@@ -197,14 +183,14 @@ public class MainViewController implements Initializable {
         } catch (JAXBException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-        
+        /*
         File xsltFile = new File("C:/Temp/AMVtemplate.xsl");
         StreamSource xmlSource = new StreamSource(new File("C:/Temp/AMVdocuments.xml"));
         //FopFactory fopFactory = FopFactory.newInstance(new File("C:/Temp/fop.xconf"));
         FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
         OutputStream out;
-        out = new java.io.FileOutputStream("C:/Temp/employee.pdf");
+        out = new java.io.FileOutputStream("C:/Temp/AMVout.pdf");
         try {
             // Construct fop with desired output format
             Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
@@ -222,7 +208,7 @@ public class MainViewController implements Initializable {
             transformer.transform(xmlSource, res);
         } finally {
             out.close();
-        }           
+        } */          
     }    
 }
 

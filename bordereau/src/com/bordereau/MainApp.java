@@ -1,7 +1,9 @@
 package com.bordereau;
 
 import com.bordereau.utils.Log;
+import com.bordereau.utils.XmlToPdf;
 import com.bordereau.view.RootLayoutController;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,8 +31,10 @@ public class MainApp extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void main(String[] args) throws IOException {
+        //launch(args);
+        XmlToPdf.print();
+        System.exit(0);
     }
 }
 
